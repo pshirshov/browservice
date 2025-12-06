@@ -30,13 +30,14 @@ jobs:
         timeout-minutes: 45
 
       - name: Test browservice starts and serves HTTP
+        timeout-minutes: 5
         run: |
           set -e
 
-          # Start browservice in background, capture output
+          # Start browservice in background
           # Note: --no-sandbox is required in CI because chrome-sandbox needs setuid root
           echo "Starting browservice..."
-          ./result/bin/browservice --use-dedicated-xvfb=yes --chromium-args=--no-sandbox 2>&1 | tee /tmp/browservice.log &
+          ./result/bin/browservice --use-dedicated-xvfb=yes --chromium-args=--no-sandbox > /tmp/browservice.log 2>&1 &
           PID=$!
 
           # Wait for HTTP server to start (increased timeout for CI)
@@ -51,7 +52,7 @@ jobs:
               echo "=== Browservice logs ==="
               cat /tmp/browservice.log || true
               echo "=== End logs ==="
-              kill $PID 2>/dev/null || true
+              kill -9 $PID 2>/dev/null || true
               exit 1
             fi
             sleep 1
@@ -67,7 +68,7 @@ jobs:
             echo "=== Browservice logs ==="
             cat /tmp/browservice.log || true
             echo "=== End logs ==="
-            kill $PID 2>/dev/null || true
+            kill -9 $PID 2>/dev/null || true
             exit 1
           fi
 
@@ -79,14 +80,14 @@ jobs:
           else
             echo "Expected 'Browservice' in HTML content"
             echo "Got: $CONTENT"
-            kill $PID 2>/dev/null || true
+            kill -9 $PID 2>/dev/null || true
             exit 1
           fi
 
-          # Cleanup
+          # Cleanup - use SIGKILL to ensure process tree dies
           echo "Cleaning up..."
-          kill $PID 2>/dev/null || true
-          wait $PID 2>/dev/null || true
+          kill -9 $PID 2>/dev/null || true
+          sleep 1
 
           echo "All tests passed!"
 
