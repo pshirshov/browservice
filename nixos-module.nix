@@ -266,6 +266,11 @@ in {
         LockPersonality = true;
         RestrictRealtime = true;
         SystemCallArchitectures = "native";
+
+        # Allow binding to privileged ports and disable user namespacing for CEF
+        AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
+        CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
+        PrivateUsers = false;
       };
     };
 
