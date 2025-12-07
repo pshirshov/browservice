@@ -269,8 +269,10 @@ in {
       };
     };
 
-    # Create data directory if specified
-    systemd.tmpfiles.rules = lib.optional (cfg.dataDir != null)
-      "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} -";
+    # Create data directory and .browservice subdirectory
+    systemd.tmpfiles.rules = lib.optionals (cfg.dataDir != null) [
+      "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} -"
+      "d ${cfg.dataDir}/.browservice 0750 ${cfg.user} ${cfg.group} -"
+    ];
   };
 }
