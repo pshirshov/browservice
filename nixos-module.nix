@@ -212,6 +212,12 @@ in {
       wantedBy = [ "multi-user.target" ];
       after = [ "network.target" ];
 
+      # Required for Xvfb and xauth when using --use-dedicated-xvfb
+      path = with pkgs; [
+        xorg.xauth
+        xorg.xorgserver  # Provides Xvfb
+      ];
+
       serviceConfig = {
         Type = "simple";
         User = cfg.user;
