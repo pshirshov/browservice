@@ -136,6 +136,9 @@
 
           src = ./.;
 
+          # Workaround: newer GCC/libstdc++ no longer transitively includes <cstdint>
+          NIX_CFLAGS_COMPILE = "-include cstdint";
+
           nativeBuildInputs = with pkgs; [
             pkg-config
             autoPatchelfHook
