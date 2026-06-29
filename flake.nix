@@ -18,7 +18,7 @@
       let
         pkgs = import nixpkgs { inherit system; };
 
-        version = "0.9.12.1";
+        version = "0.9.12.2";
 
         cefArchMap = {
           "x86_64-linux" = "x86_64";
@@ -26,8 +26,8 @@
         };
 
         cefHashes = {
-          "x86_64" = "1qdlpq98jmi3r4rg9azkrprgxs5mvmg8svgfmkyg1ld1v3api80f";
-          "aarch64" = "1dxjv65rjkbnyc051hf505hd1ahw752lh59pimr50nkgkq07wqy8";
+          "x86_64" = "0qp8x9ml90qm06iz28k5f49f2q120bf0ml262a57yfdqc4n9g3y5";
+          "aarch64" = "1p5vghshj7hrhl4s5dysri7xwy4ggbj7rvdv62p6rpxpdczvjki0";
         };
 
         cefArch = cefArchMap.${system};
